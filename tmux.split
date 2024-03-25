@@ -1,0 +1,33 @@
+#!/bin/sh
+############################################
+# AUTHOR: Iarom Madden future@iarom.org
+# Spawns tmux with todo panel above and zshprintb panel below
+###########################################
+# the v'x' panel to spawn for the setup..
+
+panel="vo"
+
+sh -c ' \
+	sleep 1.5s && \
+	xdotool key "semicolon+e" && \
+	sleep 0.5s && \
+	xdotool key "Shift+j"
+	' &
+tmux new-session -d -n oa \
+	$panel
+tmux split-window -v zshprintb
+	tmux resizep -t 1 -y 18%
+tmux select-pane -t0
+	tmux set status off
+	tmux -2 attach-session -d
+
+#tmux split-window -h zshprintb
+#tmux resizep -t 1 -x 16%
+
+# i3 related ########################
+# TODO: make into a case
+exit 
+tmux resizep -t 1 -y 18%
+tmux selectp -t0
+xdotool key "semicolon+e"
+

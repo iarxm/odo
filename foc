@@ -1,0 +1,126 @@
+#!/bin/bash
+# For setting up website blocking across the device
+# Add to hosts file on router to make it applicable across the network
+# Description
+# - Uses hblok to manage the hosts file
+# - dnsmasq is required to be restarted to refresh dns cache after changes to hosts file
+# - sometimes www needs to be added to domain name?
+
+case $1 in 
+	block)
+		hblock
+		systemctl restart dnsmasq.service
+		;;
+esac
+
+## NOTIF ################################
+# DESCRIPTION:
+# - Regular notification to cue for time constraints, and remind of timeblocking
+#
+# TODO
+# - Redefine without private info
+#
+# ===================================
+
+case $1 in
+
+## Older ============================
+# NOTES
+# - Slightly intrusive, eg if I'm using my computer in a group setting for eg video analysis or presenting
+# - Better to just print the timeblock of the day, and how many timeblocks are ideally left before it would be a good idea to close..
+# - pomo timeblocks. Split day into 30 minute chuncks and halfs/quarters..
+exit
+notify-send -u critical \
+	'CAPTURE-CONFIGURE-CONTROL' \
+'\
+TARGET:
+A.  WK:   SCHEDULE VITs \
+B.  DY:   TIMEBLOCK MIT \
+C.  HR:   POMODORO MIT! \
+\
+MEASURE/CLOSE:
+A.  TAL:  MEASURE/TALLY DEEPWORK HOURS \
+B.  FIN:  LET GO. Close attention to goals \
+\
+STRATEGY/BEHAVIOUR \
+  - Optimise for prioritised focus \
+  - Strategic \
+  - Slowly-productive. Non-reactive \
+\
+HABIT FOUNDATIONS: \
+B.  RIT.uprime/timeblock
+C.  RIT.sleep
+D.  RIT.wake \
+'
+## arx ==========================
+exit
+notify-send -u critical 'ALL:  CAPTURE-CONFIGURE-CONTROL'
+notify-send -u critical 'WEEK: SCHEDULE VITs'
+notify-send -u critical 'DAY:  TIMEBLOCK MIT'
+notify-send -u critical 'HOUR: POMODORO MIT!'
+notify-send -u critical 'FIN:  MEASURE DEEP WORK ON MIT' \
+	'TALLY DEEPWORK HOURS (dw hours) and close the day'
+
+notify-send -u critical 'VIT! ' \
+	'Do VITs: Very Important Tasks! \
+	Pomodoros on VITs. \
+	CAPTURE-CONFIGURE-CONTROL'
+
+notify-send -u critical 'TIMEBLOCK!' \
+	'Utilising Timeblocking \
+	- towards succeeding at VITs and MITs'
+
+notify-send -u critical 'POMODORO!' \
+	'Do Pomodoros on the MIT \
+	- MOST important task (singular).'
+
+notify-send -u critical 'OVERVIEW:' \
+	'- Capture-Configure-Control \
+	- Timeblocking
+	- Pomodorro
+	- Metrics'
+
+# ================================================
+# dw.notif =====================================
+su -u iao 
+DISPLAY=:0 
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+
+notify-send '2asdf'
+
+pom=$(pomo l | grep $(date +%Y-%m-%d))
+if [ -n $pom]; then
+	notify-send "Do Pomodoros"
+fi
+esac
+
+######################################
+###################################
+case $1 in
+	pomos)
+		exec st -c "pomo" pomo start $1 &
+		sleep 0.5s
+		i3-msg '[class="^pomo$"] move scratchpad'
+		i3-msg '[class="^pomo$"] scratchpad show'
+		;;
+esac
+
+#!/bin/sh
+
+case $1 in
+	cow)
+		fortune -c | cowthink -f $(find /usr/share/cows -type f | shuf -n 1)
+		;;
+	cow.stoic)
+		#fortune -c $HOME/.c/fortune/stoicism | cowthink -f $(find /usr/share/cows -type f | shuf -n 1)
+		fortune -c $HOME/.c/fortune/stoicism | fmt -80 -s | $(shuf -n 1 -e cowsay cowthink) -$(shuf -n 1 -e b d g p s t w y) -f $(shuf -n 1 -e $(cowsay -l | tail -n +2)) -n
+		;;
+	hitch)
+		fortune hitchhiker -c | ponythink
+		;;
+	pony)
+		fortune -c | ponythink
+		;;
+esac
+
+

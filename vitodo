@@ -1,0 +1,105 @@
+#!/bin/sh
+#####################################
+# text/markdown library
+#
+#####################################
+
+vot_nw() {
+	## txt variables
+	begin="d$(date +%j)"
+	end="<!>"
+	## file variables
+	dayf="/home/iao/d/a/oaa"
+	arcf="/home/iao/d/a/ooaazd"
+	arcfb="/home/iao/d/a/zoaazd.$(date +%y.%mu)"
+	weekf="/home/iao/d/a/oaady"
+	## moving text around
+	cat $dayf >> $arcfb
+	printf "# today singular:: \n" > $dayf
+	sed -n "/${begin}/,/$end/p" $weekf >> $dayf
+	# TODO
+	# - create archive file depending on date using 'date..' command
+	# - eg a new file each quarter.. about 90 days per file - maybe shorter?? 
+	# - monthly - 30days
+}
+
+vot_xdy() {
+	# TODO:
+	# 	- OUTDATED, update if interested to use again
+	#		- add weeks using 'j variable and date..'
+	# 	- two loops going.. or two counters and an if statement to set k back to 1 on 3.
+	#		j=1
+	#		simply above conditionals into one 'or conditional..
+		
+	year=2022
+	file="/home/iao/d/a/aooaadyztemp"
+		
+	printf "# Year $year \n" > $file
+	printf "\n" >> $file
+		
+	i=0
+	while [ $i -lt "366" ]; do
+		dateid=$(date --date="jan 1 + ${i} days" +%a)
+		dateiw=$(date --date="jan 1 + ${i} days" +%V)
+		if [ "$dateid" = "Mon" ]; then
+				printf "##w%s.e1 \n"  "${dateiv}" >> $file
+			elif [ "$dateid" = "Thu" ]; then
+				printf "##w%s.e2 \n"  "${dateiv}" >> $file
+			elif [ "$dateid" = "Sun" ]; then
+				printf "##w%s.e3 \n"  "${dateiv}" >> $file
+		fi
+		datei=$(date --date="jan 1 + ${i} days" +%j.%a)
+		printf "d%s.\n" "$datei" >> $file
+		printf ",,a. <!> \n" >> $file
+		i=$((i + 1))
+	done
+}
+
+exit
+#!/bin/sh
+#======================================
+# DESCRIPTION: 
+# - Basic tdo panes variable project page
+# - including extra at end
+#
+# TODO
+# - make below code into autload o.vim func
+# =====================================
+
+tpg="$( \
+	cat ${HOME}/d/a/otady |\
+	grep $(date +%j) |\
+	awk -F' ' '{print $2}')"
+
+if [ -n $tpg ]; then tpg="a/otaan"; fi
+export tpg=$tpg
+
+nvim \
+	-c 'let t_page = "$tpg" | source $XDG_BIN_HOME/vv/v/vopxi.v'
+
+cd $HOME/d
+
+" sp1 ======================
+" p1
+	edit 	a/${tpg}
+	vsplit 	a/otaa
+" p2	
+	tabnew	a/otai
+	vsplit  	a/otaa
+" p3	
+	tabnew 	a/${tpg}
+	vsplit  	a/otai
+	vsplit 	a/otaa
+" endz	
+	tabnew
+
+
+" sp2 ============================
+" p1
+	tabnew 	a/ota
+		call WideMargin()
+
+" opt =============================
+	tabfirst
+
+
